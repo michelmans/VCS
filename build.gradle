@@ -1,0 +1,56 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+	id 'eclipse'
+}
+
+group = 'me.alchemi'
+version = '0.0.1'
+description = 'VCS'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+    mavenLocal()
+    maven {
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        url = 'https://dl.bintray.com/nuvotifier/maven/' 
+    }
+}
+
+dependencies {
+	compile 'com.vexsoftware:nuvotifier-bukkit:2.3.4'
+    compile 'org.spigotmc:spigot-api:1.14.4-R0.1-SNAPSHOT'
+    compile project(':AlchemicLibrary')
+    compile project(':AlchemicLibrary-api')
+}
+
+task copy(type: Copy) {
+	dependsOn 'jar'
+	
+	group = "Build"
+	description = "Install project to Test-Server."
+	
+	println "Installing jar file from ${jar.archivePath}"
+	
+	from jar.archivePath
+	into '../Test-Server/plugins/'
+	rename '(.*)-(.*).jar', '$1.jar'
+}
+
+processResources {
+	filter  { line -> line.replaceAll('\\$\\{project.version\\}', project.version)}
+}
+
+jar {
+	
+	println "Building jar file..."
+}
+
+eclipse {
+
+	autoBuildTasks copy
+	
+}

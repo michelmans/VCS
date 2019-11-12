@@ -1,0 +1,96 @@
+AlchemicTools:
+
+  # The name of the server.
+  servername: 'Unknown Server'
+
+  Message:
+    mentionTag: '@'
+    mentionColour: '&b&n'
+    receiveSound: ENTITY_CHICKEN_EGG
+    mentionSound: ENTITY_ENDER_DRAGON_GROWL
+    bypassStaffChatCharacter: "!"
+
+  Vanish:
+
+    # Wether to enable the invisibility effect when in vanish.
+    # Default: false
+    enablePotionEffect: false
+
+    # Wether to notify admins with the alchemictools.vanish.notify permission node get notified when you go into vanish.
+    # Default: true
+    notifyAdmins: true
+
+    # Wether to show when vanished on the action bar.
+    # Default: true
+    actionBar: true
+
+    # How the player with the alchemictools.vanish.see permission node see the vanish indication in the tab.
+    # This can be SPECTATOR (grey italic tabname), PREFIX (a prefix in your tabname) or NONE (nothing).
+    # Default: SPECTATOR
+    indication: SPECTATOR
+
+    # The tab prefix if the indication option is set to PREFIX.
+    # Default: '&7&o[Vanished]&r '
+    tabPrefix: '&7&o[Vanished]&r '
+
+    # Wether to show a player's inventory when right clicked in vanish mode.
+    # Default: true
+    rightClickInventory: true
+
+    # Wether to display a player's status effects when punched in vanish mode.
+    # Default: true
+    leftClickEffects: true
+
+    # Wether to cancel player commands which target a vanished player.
+    # Default: true
+    cancelCommands: true
+
+  Restart:
+
+    defaultDelay: 30
+    warnings: 5
+    defaultMessage: 'a scheduled restart'
+
+  # Wether or not to enable UUID conversion.
+  # Default: false
+  UUIDConversion: false
+
+  Hooks:
+
+    # Wether to hook into mvdwplaceholderapi.
+    # Default: true
+    mvdwplaceholderapi: true
+
+    # Wether to hook into chatcontrol.
+    # Default: true
+    chatcontrol: true
+
+    # Wether to make use of bungee.
+    # Default: true
+    bungee: true
+
+    # Wether to hook into worldguard.
+    # Default: true
+    worldguard: true
+
+  Bugs:
+    
+    #Report bugs to trello
+    Trello:
+      
+      enabled: true
+      
+      #Input your trello key here.
+      #You can get it here: https://trello.com/app-key
+      key: ""
+      
+      #Do not touch this config option!
+      #You'll generate this in-game.
+      token: ""
+      
+      #The name of the board where you want the bug reports.
+      boardName: ""
+      
+      #The name of the list in the board where you want the bug reports.
+      listName: ""
+    
