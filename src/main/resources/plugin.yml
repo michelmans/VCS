@@ -5,4 +5,4 @@ author: Alchemi
 description: A plugin that stores votes and lastseen data for players.
 depend:
 - AlchemicLibrary
-- NuVotifier
+- Votifier

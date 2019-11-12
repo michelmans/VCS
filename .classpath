@@ -14,5 +14,9 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8/"/>
 	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
+	<classpathentry kind="src" path="/AlchemicLibrary"/>
+	<classpathentry kind="src" path="/AlchemicLibrary-v1_13_R2"/>
+	<classpathentry kind="src" path="/AlchemicLibrary-v1_14_R1"/>
+	<classpathentry kind="src" path="/AlchemicLibrary-api"/>
 	<classpathentry kind="output" path="bin/default"/>
 </classpath>

@@ -2,14 +2,19 @@ package me.alchemi.vcs;
 
 import java.io.IOException;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 
 import me.alchemi.al.configurations.Messenger;
 import me.alchemi.al.objects.base.PluginBase;
+import me.alchemi.vcs.data.VoteData;
+import me.alchemi.vcs.listeners.Votes;
 
 public class VCS extends PluginBase {
 	
 	private static VCS instance;
+	
+	private VoteData votedata;
 	
 	@Override
 	public void onEnable() {
@@ -26,6 +31,10 @@ public class VCS extends PluginBase {
 			e.printStackTrace();
 			getServer().getPluginManager().disablePlugin(this);
 		}
+		
+		votedata = new VoteData();
+		
+		Bukkit.getPluginManager().registerEvents(new Votes(), this);
 		
 		enableCommands();
 		
@@ -49,6 +58,10 @@ public class VCS extends PluginBase {
 	
 	public Messenger getMessenger() {
 		return messenger;
+	}
+
+	public VoteData getVotedata() {
+		return votedata;
 	}
 	
 }
