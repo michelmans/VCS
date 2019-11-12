@@ -11,7 +11,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear
@@ -21,3 +20,18 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+/bin/
+
+.classpath
+.project
+build.xml
+maven-build.properties
+maven-build.xml
+
+/target/
+/.git/
+/.externalToolBuilders/
+/.settings/
+/.gradle/
+/bin/
+/build/
