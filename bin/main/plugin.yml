@@ -1,8 +1,0 @@
-name: VCS
-main: me.alchemi.vcs.VCS
-version: ${project.version}
-author: Alchemi
-description: A plugin that stores votes and lastseen data for players.
-depend:
-- AlchemicLibrary
-- Votifier
