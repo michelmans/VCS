@@ -1,11 +1,10 @@
 plugins {
     id 'java'
-    id 'maven-publish'
 	id 'eclipse'
 }
 
 group = 'me.alchemi'
-version = '0.0.1'
+version = '1.0.0'
 description = 'VCS'
 sourceCompatibility = '1.8'
 
@@ -47,8 +46,27 @@ processResources {
 }
 
 jar {
-	
 	println "Building jar file..."
+	println "Version $version"
+}
+
+task export {
+	dependsOn 'jar'
+	finalizedBy 'incrementVersion'
+
+	println "Exporting to jar file."
+}
+
+task incrementVersion {
+    doFirst{
+		String minor=version.substring(version.lastIndexOf('.')+1)
+		int m=minor.toInteger()+1
+		String major=version.substring(0,version.length()-1)
+		String s=buildFile.getText().replaceFirst("version = '$version'","version = '"+major+m+"'")
+		buildFile.setText(s)
+		
+		println "New version " + major + m
+	}
 }
 
 eclipse {

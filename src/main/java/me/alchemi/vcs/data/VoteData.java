@@ -54,7 +54,12 @@ public class VoteData {
 			setValueLimit(7);
 		}
 	};
-	private static Table loggingTable = new Table("votes_logging",  voteID, loggingUUID, userName, site, votePeriod);
+	protected static Column timeStamp = new Column("timestamp", DataType.DATETIME, ColumnModifier.DEFAULT) {
+		{
+			setDefValue("NOW()");
+		}
+	};
+	private static Table loggingTable = new Table("votes_logging",  voteID, loggingUUID, userName, site, votePeriod, timeStamp);
 	private static Table totalTable = new Table("votes_total", totalUUID, userName, voteCount, lastVoteID);
 	
 	public VoteData() {
@@ -80,6 +85,11 @@ public class VoteData {
 				put(userName, player.getName());
 				put(site, vote.getServiceName());
 				put(votePeriod, period);
+				try{
+					put(timeStamp, new java.sql.Timestamp(Long.valueOf(vote.getTimeStamp())));
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		
