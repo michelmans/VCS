@@ -118,10 +118,6 @@ public class VoteData {
 							}
 							final int id = voteid;
 							
-							int lastID = db.getValue(totalTable, lastVoteID, totalUUID, player.getUniqueId()).getInt(lastVoteID.getName());
-							
-							String lastPeriod = db.getValue(loggingTable, votePeriod, voteID, lastID).getString(votePeriod.getName());
-							
 							ResultSet set2 = db.getValue(loggingTable, voteID, new HashMap<Column,Object>(){
 								{
 									put(loggingUUID, player.getUniqueId());
@@ -129,17 +125,13 @@ public class VoteData {
 								}
 							});
 							
-							if (set.first() && lastPeriod.equals(period)) {
+							if (set.first()) {
 								db.updateValues(totalTable, new HashMap<Column, Object>(){
 									{
 										put(lastVoteID, id);
-										put(voteCount, set2.first() ? set2.getFetchSize() : 0);
+										put(voteCount, set2.last() ? set2.getRow() : 1);
 									}
 								}, totalUUID, player.getUniqueId().toString());
-								
-							} else if (set.first()) {
-								db.removeRow(totalTable, totalUUID, player.getUniqueId());
-								registerVoter(player, id);
 								
 							} else registerVoter(player, id);
 						} catch (SQLException e) {
