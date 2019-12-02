@@ -1,10 +1,11 @@
 plugins {
     id 'java'
 	id 'eclipse'
+	id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
 group = 'me.alchemi'
-version = '1.0.0'
+version = '1.0.5'
 description = 'VCS'
 sourceCompatibility = '1.8'
 
@@ -27,50 +28,53 @@ dependencies {
 	
 	compileOnly 'org.jetbrains:annotations:17.0.0'
 }
-
 task copy(type: Copy) {
 	dependsOn 'jar'
-	
-	group = "Build"
-	description = "Install project to Test-Server."
-	
-	println "Installing jar file from ${jar.archivePath}"
-	
-	from jar.archivePath
-	into '../Test-Server/plugins/'
-	rename '(.*)-(.*).jar', '$1.jar'
+	group = 'Build'
+	description = 'Install project to Test-Server.'
+
+	doFirst{
+		println 'Installing jar file from ${jar.archivePath}'
+
+		from jar.archivePath
+		into '../Test-Server/plugins/'
+		rename '(.*)-(.*).jar', '$1.jar'
+	}
 }
 
 processResources {
-	filter  { line -> line.replaceAll('\\$\\{project.version\\}', project.version)}
+	doFirst{
+		println project.version
+		filter  { line -> line.replace('${project.version}', project.version)}
+	}
 }
 
 jar {
-	println "Building jar file..."
-	println "Version $version"
+	doFirst{
+		println 'Building jar file...'
+	}
 }
 
 task export {
 	dependsOn 'jar'
 	finalizedBy 'incrementVersion'
 
-	println "Exporting to jar file."
+	doLast{
+		println 'Exporting to jar file.'
+	}
 }
 
 task incrementVersion {
-    doFirst{
+	doFirst{
 		String minor=version.substring(version.lastIndexOf('.')+1)
 		int m=minor.toInteger()+1
 		String major=version.substring(0,version.length()-1)
-		String s=buildFile.getText().replaceFirst("version = '$version'","version = '"+major+m+"'")
+		String s=buildFile.getText().replaceFirst('version = \'' + project.version + '\'','version = \''+major+m+'\'')
 		buildFile.setText(s)
-		
-		println "New version " + major + m
+		println 'New version ' + major + m
 	}
 }
 
 eclipse {
-
 	autoBuildTasks copy
-	
 }

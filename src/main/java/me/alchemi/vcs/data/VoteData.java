@@ -2,7 +2,10 @@ package me.alchemi.vcs.data;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -23,6 +26,8 @@ import me.alchemi.vcs.VCS;
 
 public class VoteData {
 
+	protected Map<UUID, Integer> voteCountMap = new HashMap<UUID, Integer>();
+	
 	protected static MySQLDatabase db;
 	
 	//global column
@@ -86,7 +91,7 @@ public class VoteData {
 				put(site, vote.getServiceName());
 				put(votePeriod, period);
 				try{
-					put(timeStamp, new java.sql.Timestamp(Long.valueOf(vote.getTimeStamp())));
+					put(timeStamp, new Timestamp(Long.valueOf(vote.getTimeStamp()) * 1000).toString());
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
 				}
@@ -103,9 +108,9 @@ public class VoteData {
 							ResultSet set = db.getValues(totalTable, totalUUID, player.getUniqueId().toString(), voteCount, userName);
 							
 							if (!callObject.first()) {
-								Messenger.printStatic(callObject);
 								return;
 							}
+							
 							int voteid = callObject.getInt(voteID.getName());
 							while(callObject.next()) {
 								int id = callObject.getInt(voteID.getName());
@@ -113,13 +118,28 @@ public class VoteData {
 							}
 							final int id = voteid;
 							
-							if (set.first()) {
+							int lastID = db.getValue(totalTable, lastVoteID, totalUUID, player.getUniqueId()).getInt(lastVoteID.getName());
+							
+							String lastPeriod = db.getValue(loggingTable, votePeriod, voteID, lastID).getString(votePeriod.getName());
+							
+							ResultSet set2 = db.getValue(loggingTable, voteID, new HashMap<Column,Object>(){
+								{
+									put(loggingUUID, player.getUniqueId());
+									put(votePeriod, period);
+								}
+							});
+							
+							if (set.first() && lastPeriod.equals(period)) {
 								db.updateValues(totalTable, new HashMap<Column, Object>(){
 									{
 										put(lastVoteID, id);
-										put(voteCount, set.getInt(voteCount.getName()) + 1);
+										put(voteCount, set2.first() ? set2.getFetchSize() : 0);
 									}
 								}, totalUUID, player.getUniqueId().toString());
+								
+							} else if (set.first()) {
+								db.removeRow(totalTable, totalUUID, player.getUniqueId());
+								registerVoter(player, id);
 								
 							} else registerVoter(player, id);
 						} catch (SQLException e) {
